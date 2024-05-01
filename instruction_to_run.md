@@ -14,7 +14,7 @@ docker pull skydockai/skydock_ai_suite:latest
 docker run --env-file ./config.env skydock_ai_suite:latest
 ```
 
-### 3. Using Docker Compose:
+## Using Docker Compose:
 - Clone the source code:
 ```bash
 git clone https://github.com/skydockAI/skydock_ai_suite.git
