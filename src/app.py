@@ -8,6 +8,7 @@ import re
 from openai_utils import *
 from document_utils import *
 from powerpoint_generator import create_powerpoint_file
+from graph_generator import create_graph_file
 
 SLACK_SOCKET_TOKEN = os.getenv("SLACK_SOCKET_TOKEN")
 SLACK_BOT_USER_TOKEN = os.getenv("SLACK_BOT_USER_TOKEN")
@@ -25,6 +26,7 @@ IMAGE_GENERATION_ENABLED = os.getenv('IMAGE_GENERATION_ENABLED', 'False').lower(
 TEXT_TO_SPEECH_ENABLED = os.getenv('TEXT_TO_SPEECH_ENABLED', 'False').lower() in ('true', '1')
 SPEECH_TO_TEXT_ENABLED = os.getenv('SPEECH_TO_TEXT_ENABLED', 'False').lower() in ('true', '1')
 POWERPOINT_GENERATION_ENABLED = os.getenv('POWERPOINT_GENERATION_ENABLED', 'False').lower() in ('true', '1')
+GRAPH_GENERATION_ENABLED = os.getenv('GRAPH_GENERATION_ENABLED', 'False').lower() in ('true', '1')
 
 GPT_MODEL = os.getenv("GPT_MODEL")
 TTS_MODEL = os.getenv("TTS_MODEL")
@@ -153,6 +155,28 @@ if POWERPOINT_GENERATION_ENABLED:
 else:
     print('POWERPOINT_GENERATION: Disabled')
 
+if GRAPH_GENERATION_ENABLED:
+    tools.append({
+        "type": "function",
+        "function": {
+            "name": "generate_graph",
+            "description": "Generate graph or diagram from DOT language using Graphviz library",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "graph_data": {
+                        "type": "string",
+                        "description": "Graph data in DOT language format",
+                    }
+                },
+                "required": ["graph_data"],
+            }
+        },
+    })
+    print('GRAPH_GENERATION_ENABLED: Enabled')
+else:
+    print('GRAPH_GENERATION_ENABLED: Disabled')
+
 @app.message()
 def im_message(client, message):
     if message["channel_type"] == "im": # Direct message
@@ -218,6 +242,13 @@ def process_conversation(client, message):
             generated_file = create_powerpoint_file(topic, slide_data, TEMP_FILES_FOLDER)
             client.files_upload_v2(channel = message["channel"], thread_ts = message["ts"], file = generated_file, title = "Powerpoint presentation")
             response = f'[SUCCESS] Your Powerpoint presentation has been generated successfully'
+            clean_up_file(generated_file)
+        elif function_name == "generate_graph":
+            graph_data = arguments["graph_data"]
+            output_file_name = f'{TEMP_FILES_FOLDER}/{generate_random_file_name()}'
+            generated_file = create_graph_file(graph_data, output_file_name)
+            client.files_upload_v2(channel = message["channel"], thread_ts = message["ts"], file = generated_file, title = "Graph")
+            response = f'[SUCCESS] Your graph has been generated successfully'
             clean_up_file(generated_file)
         else:
             response = f"[ERROR] Invalid function"

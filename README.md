@@ -4,13 +4,13 @@
 
 SkyDock AI Suite is a comprehensive Docker image crafted to help businesses harness the power of the latest AI technologies from OpenAI in a secure manner. Designed for team productivity, this suite includes features like image generation, speech-to-text conversion, and PowerPoint presentation creation. As an evolving project, SkyDock AI Suite will continue to expand its capabilities, adding even more powerful features to help businesses and individuals leverage AI advancements.
 
-- ✅ Conversation History
 - ✅ GPT Vision Support
 - ✅ Document Attachment Support
 - ✅ Image Generation
 - ✅ Text to Speech Conversion
 - ✅ Speech to Text Conversion
 - ✅ Powerpoint Presentation Generation
+- ✅ Graph Generation
 
 
 ## 🚀 Quickstart
@@ -36,14 +36,11 @@ docker run --env-file ./config.env skydock_ai_suite:latest
 
 
 ## Key Features:
-- **Conversation History**: Maintains the context of each conversation within a Slack thread, ensuring continuity and ease of reference.
-<img src="/images/conversation_history.png" alt="Conversation History"></img>
-
 - **GPT Vision Support**: Utilizes the gpt-4-turbo model to provide cutting-edge vision capabilities.
 <img src="/images/gpt_vision.png" alt="GPT Vision Support"></img>
 
 - **Document Attachment Support**: Allows users to input information via document attachments. Currently supports .txt, .docx, and .pdf file formats.
-<img src="/images/document_attachment.png" alt="GPT Vision Support"></img>
+<img src="/images/document_attachment.png" alt="Document Attachment Support"></img>
 
 - **Image Generation**: Leverages the Dall-E models to support creative and dynamic image generation.
 <img src="/images/image_generation.png" alt="Image Generation"></img>
@@ -55,7 +52,10 @@ docker run --env-file ./config.env skydock_ai_suite:latest
 <img src="/images/stt.png" alt="Speech to Text Conversion"></img>
 
 - **Powerpoint Presentation Generation**: Automatically creates PowerPoint presentations on a specified topic or based on input document.
-<img src="/images/presentation_generation.png" alt="Speech to Text Conversion"></img>
+<img src="/images/presentation_generation.png" alt="Powerpoint Presentation Generation"></img>
+
+- **Graph Generation**: Automatically creates graphs and diagrams based on description.
+<img src="/images/graph_generation.png" alt="Graph Generation"></img>
 
 
 ## License:
