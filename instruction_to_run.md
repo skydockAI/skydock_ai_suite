@@ -11,7 +11,7 @@ docker pull skydockai/skydock_ai_suite:latest
 
 - Run the Docker image:
 ```bash
-docker run --env-file ./config.env skydock_ai_suite:latest
+docker run --env-file ./config.env skydockai/skydock_ai_suite:latest
 ```
 
 ## Using Docker Compose:
