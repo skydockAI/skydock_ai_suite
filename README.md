@@ -41,25 +41,28 @@ docker run --env-file ./config.env -p 8000:8000 skydock_ai_suite:latest
 
 
 ## Key Features:
-- **GPT Vision Support**: Utilizes the gpt-4-turbo model to provide cutting-edge vision capabilities.
+### GPT Vision Support: Utilizes the gpt-4-turbo model to provide cutting-edge vision capabilities.
 <img src="/images/gpt_vision.png" alt="GPT Vision Support"></img>
 
-- **Document Attachment Support**: Allows users to input information via document attachments. Currently supports .txt, .docx, and .pdf file formats.
+### Document Attachment Support: Allows users to input information via document attachments. Currently supports .txt, .docx, and .pdf file formats.
 <img src="/images/document_attachment.png" alt="Document Attachment Support"></img>
 
-- **Image Generation**: Leverages the Dall-E models to support creative and dynamic image generation.
+### Image Generation: Leverages the Dall-E models to support creative and dynamic image generation.
 <img src="/images/image_generation.png" alt="Image Generation"></img>
 
-- **Text to Speech Conversion**: Converts text messages into spoken words, enhancing accessibility.
+### Text to Speech Conversion: Converts text messages into spoken words, enhancing accessibility.
 <img src="/images/tts.png" alt="Text to Speech Conversion"></img>
 
-- **Speech to Text Conversion**: Uses the Whisper model to transcribe spoken words into text, facilitating easy communication.
+### Speech to Text Conversion: Uses the Whisper model to transcribe spoken words into text, facilitating easy communication.
 <img src="/images/stt.png" alt="Speech to Text Conversion"></img>
 
-- **Powerpoint Presentation Generation**: Automatically creates PowerPoint presentations on a specified topic or based on input document.
+### Powerpoint Presentation Generation: Automatically creates PowerPoint presentations on a specified topic or based on input document.
 <img src="/images/presentation_generation.png" alt="Powerpoint Presentation Generation"></img>
 
-- **Graph Generation**: Automatically creates graphs and diagrams based on description.
+Here are the generated presentation:
+<img src="/images/generated_presentation.png" alt="Powerpoint Presentation Generation"></img>
+
+### Graph Generation: Automatically creates graphs and diagrams based on description.
 <img src="/images/graph_generation.png" alt="Graph Generation"></img>
 
 
