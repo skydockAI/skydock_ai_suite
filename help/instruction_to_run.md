@@ -6,12 +6,12 @@
 docker pull skydockai/skydock_ai_suite:latest
 ```
 
-- Configure Environment Variables: Download the [config.env](config.env) file and update the first three variables (**SLACK_SOCKET_TOKEN**, **SLACK_BOT_USER_TOKEN**, and **OPENAI_KEY**) with your Slack app tokens and OpenAI API key.
+- Configure Environment Variables: Download the [config.env](/config.env) file and update **OPENAI_KEY** with your OpenAI API key.
   (**Note:** If you use Azure OpenAI instead of OpenAI, please see [this instruction](instruction_for_azure_openai.md))
 
 - Run the Docker image:
 ```bash
-docker run --env-file ./config.env skydockai/skydock_ai_suite:latest
+docker run --env-file ./config.env -p 8000:8000 skydockai/skydock_ai_suite:latest
 ```
 
 ## Using Docker Compose:

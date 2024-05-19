@@ -2,7 +2,9 @@ services:
   skydock_ai_suite:
     build:
       context: .
-    env_file: config.env
+    env_file: .env
+    ports:
+      - "8000:8000"
       
 
 

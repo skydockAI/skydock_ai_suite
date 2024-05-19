@@ -23,16 +23,21 @@ git clone https://github.com/skydockAI/skydock_ai_suite.git
 ```bash
 docker build -t skydock_ai_suite:latest .
 ```
-- Configure Environment Variables: Download the [config.env](config.env) file and update the first three variables (**SLACK_SOCKET_TOKEN**, **SLACK_BOT_USER_TOKEN**, and **OPENAI_KEY**) with your Slack app tokens and OpenAI API key.
-  (**Note:** If you use Azure OpenAI instead of OpenAI, please see [this instruction](instruction_for_azure_openai.md))
+- Configure Environment Variables: Open the [config.env](config.env) file and update **OPENAI_KEY** with your OpenAI API key.
 
 - Run the Docker image:
 ```bash
-docker run --env-file ./config.env skydock_ai_suite:latest
+docker run --env-file ./config.env -p 8000:8000 skydock_ai_suite:latest
 ```
+
+- Open [http://localhost:8000/](http://localhost:8000/) to start using SkyDock AI Suite 
+
 **Note:** 
-- Other options to run SkyDock AI Suite can be found [here](instruction_to_run.md)
-- Read [this instruction](instruction_for_powerpoint_template.md) if you want to use your own PowerPoint template file
+- If you use Azure OpenAI instead of OpenAI, please see [this instruction](help/instruction_for_azure_openai.md)
+- Other options to run SkyDock AI Suite can be found [here](help/instruction_to_run.md)
+- By default, SkyDock AI Suite runs as a web application using [Chainlit](https://chainlit.io/) framework. Read [this instruction](help/instruction_for_slack_bot.md) if you want to run it as a Slack bot.
+- By default, SkyDock AI Suite run on port 8000. Read [this instruction](help/instruction_to_change_port.md) if you want to change to another port.
+- Read [this instruction](help/instruction_for_powerpoint_template.md) if you want to use your own PowerPoint template file
 
 
 ## Key Features:

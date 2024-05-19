@@ -8,4 +8,4 @@ docker run --env-file ./config_azure.env skydock_ai_suite:latest
 ```
 
 ## Notes:
-- GPT Vision only works with GPT-4-Turbo model. You must use an equivalent model from Azure OpenAI for GPT Vision to work.
+- GPT Vision only works with GPT-4-Turbo or GPT-4o model. You must use an equivalent model from Azure OpenAI for GPT Vision to work.

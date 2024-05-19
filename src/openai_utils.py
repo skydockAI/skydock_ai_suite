@@ -1,7 +1,26 @@
+from openai import OpenAI, AzureOpenAI, AsyncOpenAI, AsyncAzureOpenAI
 import base64
 import random
 import time
+import os
 from types import SimpleNamespace
+
+def create_ai_client():
+    OPENAI_KEY = os.getenv("OPENAI_KEY")
+    AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
+    AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+    AZURE_OPENAI_VERSION = os.getenv("AZURE_OPENAI_VERSION")
+
+    if OPENAI_KEY:
+        print("Running with OpenAI")
+        ai_client = OpenAI(api_key=OPENAI_KEY)
+    elif AZURE_OPENAI_KEY:
+        print("Running with Azure OpenAI")
+        ai_client = AzureOpenAI(api_key = AZURE_OPENAI_KEY, api_version=AZURE_OPENAI_VERSION, azure_endpoint=AZURE_OPENAI_ENDPOINT)
+    else:
+        print("[ERROR] Missing both OPENAI_KEY and AZURE_OPENAI_KEY")
+        exit(1)
+    return ai_client
 
 def get_gpt_response(ai_client, gpt_model, system_prompt, conversation_history, tools):
     prompt_structure = [{"role": "system", "content": system_prompt}]
@@ -45,3 +64,148 @@ def encode_image(image_path):
 
 def generate_random_file_name():
     return f'{int(time.time_ns())}_{random.randint(0,10000)}'
+
+def get_file_extension(file_path):
+    _, file_extension = os.path.splitext(file_path)
+    return file_extension
+
+def generate_tools_list():
+    IMAGE_GENERATION_ENABLED = os.getenv('IMAGE_GENERATION_ENABLED', 'False').lower() in ('true', '1')
+    TEXT_TO_SPEECH_ENABLED = os.getenv('TEXT_TO_SPEECH_ENABLED', 'False').lower() in ('true', '1')
+    SPEECH_TO_TEXT_ENABLED = os.getenv('SPEECH_TO_TEXT_ENABLED', 'False').lower() in ('true', '1')
+    POWERPOINT_GENERATION_ENABLED = os.getenv('POWERPOINT_GENERATION_ENABLED', 'False').lower() in ('true', '1')
+    GRAPH_GENERATION_ENABLED = os.getenv('GRAPH_GENERATION_ENABLED', 'False').lower() in ('true', '1')
+
+    tools = []
+    if IMAGE_GENERATION_ENABLED:
+        tools.append({
+            "type": "function",
+            "function": {
+                "name": "generate_image",
+                "description": "Generate image basing on description",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the image, e.g. a house under an apple tree",
+                        },
+                        "size": {
+                            "type": "string",
+                            "enum": ["square", "portrait", "landscape"],
+                            "description": "Size of the generated image. Use square if no information is provided",
+                        }
+                    },
+                    "required": ["description"],
+                }
+            },
+        })
+        print('IMAGE_GENERATION: Enabled')
+    else:
+        print('IMAGE_GENERATION: Disabled')
+
+    if TEXT_TO_SPEECH_ENABLED:
+        tools.append({
+            "type": "function",
+            "function": {
+                "name": "generate_tts",
+                "description": "Generate or convert from text to speech",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "input_text": {
+                            "type": "string",
+                            "description": "Text to be converted to speech",
+                        }
+                    },
+                    "required": ["input_text"],
+                }
+            },
+        })
+        print('TEXT_TO_SPEECH: Enabled')
+    else:
+        print('TEXT_TO_SPEECH: Disabled')
+
+    if SPEECH_TO_TEXT_ENABLED:
+        tools.append({
+            "type": "function",
+            "function": {
+                "name": "generate_stt",
+                "description": "Transcript or convert from speech to text",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                    }
+                }
+            },
+        })
+        print('SPEECH_TO_TEXT: Enabled')
+    else:
+        print('SPEECH_TO_TEXT: Disabled')
+
+    if POWERPOINT_GENERATION_ENABLED:
+        tools.append({
+            "type": "function",
+            "function": {
+                "name": "generate_presentation",
+                "description": "Generate contents for powerpoint presentation slides for a specific topic or basing on provided information",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "topic": {
+                            "type": "string",
+                            "description": "Topic of the presentation",
+                        },
+                        "slide_data": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title of the slide"
+                                    },
+                                    "content": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "description": "Content for one bullet point"
+                                        },
+                                        "description": "An array of main contents of the slide"
+                                    }
+                                }
+                            },
+                            "description": "An array of slide contents",
+                        }
+                    },
+                    "required": ["topic", "slide_data"],
+                }
+            }
+        })
+        print('POWERPOINT_GENERATION: Enabled')
+    else:
+        print('POWERPOINT_GENERATION: Disabled')
+
+    if GRAPH_GENERATION_ENABLED:
+        tools.append({
+            "type": "function",
+            "function": {
+                "name": "generate_graph",
+                "description": "Generate graph or diagram from DOT language using Graphviz library",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "graph_data": {
+                            "type": "string",
+                            "description": "Graph data in DOT language format",
+                        }
+                    },
+                    "required": ["graph_data"],
+                }
+            },
+        })
+        print('GRAPH_GENERATION_ENABLED: Enabled')
+    else:
+        print('GRAPH_GENERATION_ENABLED: Disabled')
+
+    return tools

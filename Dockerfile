@@ -28,9 +28,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Install Graphviz for graph generation
 RUN apt-get update && apt-get install -y graphviz
 
-# Copy the source code into the container.
+# Copy the source code and required resources into the container.
 COPY ./src/. .
 COPY ./resources/. .
 
-# Run the application.
-CMD python3 app.py
+# Initialize Chainlit
+RUN chainlit init
+
+# Copy config file for Chainlit
+COPY ./config.toml /app/.chainlit
+
+# Make port available for the Chainlit app.
+# Need to match with the value in config.env file
+EXPOSE 8000
+
+# Give execute permission to the entrypoint script
+RUN chmod +x /app/skydock_ai_suite.sh
+
+# Run the entrypoint script
+ENTRYPOINT ["/app/skydock_ai_suite.sh"]

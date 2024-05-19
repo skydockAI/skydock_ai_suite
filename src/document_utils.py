@@ -2,9 +2,10 @@ import os
 from docx import Document
 import PyPDF2
 
-def read_all_text_from_file(file_path):
+def read_all_text_from_file(file_path, file_extension = None):
     result = ""
-    file_extension = os.path.splitext(file_path)[1].lower()
+    if not file_extension:
+        file_extension = os.path.splitext(file_path)[1].lower()
     if file_extension == '.txt' or file_extension == '.text':
         with open(file_path, 'r', encoding='utf-8') as file:
             result = file.read()
